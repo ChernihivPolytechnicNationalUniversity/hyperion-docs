@@ -1,53 +1,47 @@
 ---
-title: Introduction
-description: Developer-first documentation with diagrams-as-code and more
-icon: Book
+title: Digital University Documentation
+description: Architecture and technical documentation for the Digital University project
+icon: GraduationCap
 ---
 
-# Welcome to Diagramming Guru
+# Digital University Documentation
 
-This is a **developer-first** documentation stack that combines:
+Welcome to the Digital University project documentation. This site contains comprehensive architecture documentation, design decisions, and technical guidelines.
 
-- **Fumadocs v15** for beautiful, fast MDX documentation
-- **Kroki** for rendering diagrams from code
-- **Mermaid** for inline diagrams with dark/light theme support
-- **React Flow** for zoomable diagram viewing
+## Quick Navigation
 
-## Features
+### Architecture Documentation
+- [Architecture Overview](architecture/digital-university) - System architecture and design decisions
+- [ADRs](architecture/digital-university/adr) - Architecture Decision Records documenting key decisions
+- [Solution Designs](architecture/digital-university/solution-designs) - Feature designs and implementation plans
+- [Sequence Diagrams](architecture/digital-university/sequence) - Interaction flows and API sequences
+- [ERD](architecture/digital-university/erd) - Database schema and entity relationships
+- [C4 Diagrams](architecture/digital-university/c4) - System context and container views
 
-### 🚀 Hot Reload in Docker
-
-The entire stack runs in Docker with hot reload enabled for fast development.
-
-### 🔒 Secure by Default
-
-- Path traversal protection
-- File size limits
-- Language allowlist
-- No code execution
-
-### 📦 One-Command Setup
-
-```bash
-./scripts/dev.sh
-# or
-pnpm dev
-```
-
-That's it! Both services (docs + Kroki) start with a single command.
+### Standards & Guidelines
+- [Agreements](agreements) - Technical standards and conventions
+- [Guidelines](guidelines) - Step-by-step implementation guides
+- [Process Documentation](process) - Team workflows and procedures
 
 ## Getting Started
 
-1. Clone the repository
-2. Run `pnpm dev` to start both services
-3. Visit `http://localhost:3000`
-4. Edit MDX files or diagrams - changes reflect immediately!
+### For New Team Members
+1. Read the [Architecture Overview](architecture/digital-university)
+2. Review [ADR-001: Initial Architecture](architecture/digital-university/adr/ADR-001-initial-architecture)
+3. Check the [Development Setup Guide](guidelines/setup/local-development)
 
-## Supported Diagram Languages
+### For Contributors
+- See [Documentation Templates](/docs/templates/) for creating new documentation
+- Follow the [Contributing Guide](/docs/CONTRIBUTING.md) for standards and conventions
+- Use the provided templates for consistent documentation
 
-- **PlantUML** (`puml`, `plantuml`)
-- **Graphviz** (`dot`, `graphviz`)
-- **Mermaid** (inline via `<Mermaid>` or via Kroki)
-- **C4 PlantUML** (`c4plantuml`)
+## Documentation Structure
 
-Easily extensible to support more Kroki-compatible formats!
+All documentation follows the Hyperion Docs standards:
+- **ADRs** - Architectural decisions with context and rationale
+- **Solution Designs** - Feature designs paired with test designs
+- **Sequence Diagrams** - Organized by client/actor
+- **ERD** - Database schema documentation
+- **C4 Diagrams** - Multi-level architecture views
+
+Ready to start documenting? Choose a template and begin!

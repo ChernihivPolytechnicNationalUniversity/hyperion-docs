@@ -1,0 +1,24 @@
+@startuml
+!include <C4/C4_Container>
+!include /plantuml/themes/puml-theme-x-light.puml
+
+' TODO: Replace with actual containers
+
+Person(user, "User", "Student, instructor, or admin")
+
+System_Boundary(du, "Digital University") {
+    Container(web, "Web Application", "React, Next.js", "Provides UI for users")
+    Container(api, "API Application", "Node.js, Express", "Provides REST API")
+    ContainerDb(db, "Database", "PostgreSQL", "Stores user data, courses, enrollments")
+    Container(worker, "Background Worker", "Node.js", "Processes async tasks")
+}
+
+System_Ext(email, "Email System", "External email service")
+
+Rel(user, web, "Uses", "HTTPS")
+Rel(web, api, "Makes API calls", "HTTPS/JSON")
+Rel(api, db, "Reads/writes", "SQL/TCP")
+Rel(worker, db, "Reads/writes", "SQL/TCP")
+Rel(worker, email, "Sends emails", "SMTP")
+
+@enduml

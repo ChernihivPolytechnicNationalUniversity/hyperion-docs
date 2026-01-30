@@ -1,0 +1,23 @@
+@startuml
+!include <C4/C4_Context>
+!include /plantuml/themes/puml-theme-x-light.puml
+
+' TODO: Replace with actual system context
+
+Person(student, "Student", "University student accessing courses")
+Person(instructor, "Instructor", "Course instructor")
+Person(admin, "Administrator", "System administrator")
+
+System(du, "Digital University", "Online learning management system")
+
+System_Ext(email, "Email System", "Sends notifications")
+System_Ext(payment, "Payment Gateway", "Processes payments")
+
+Rel(student, du, "Uses", "HTTPS")
+Rel(instructor, du, "Manages courses", "HTTPS")
+Rel(admin, du, "Administers", "HTTPS")
+
+Rel(du, email, "Sends emails", "SMTP")
+Rel(du, payment, "Processes payments", "HTTPS/API")
+
+@enduml

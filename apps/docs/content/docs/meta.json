@@ -1,15 +1,12 @@
 {
-  "title": "Documentation",
+  "title": "Digital University",
   "pages": [
-    "index",
-    "---Guides---",
-    "quick-start",
-    "diagramming",
-    "---Sequence---",
-    "seq",
-    "---Solution Design---",
-    "solution-design",
-    "---OpenAPI---",
-    "openapi"
+    "architecture",
+    "---Standards & Process---",
+    "agreements",
+    "guidelines",
+    "process",
+    "---Archive---",
+    "_backup"
   ]
 }

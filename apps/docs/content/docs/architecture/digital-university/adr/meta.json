@@ -1,0 +1,7 @@
+{
+  "title": "ADRs",
+  "pages": [
+    "ADR-001-initial-architecture",
+    "ADR-002-database-selection"
+  ]
+}

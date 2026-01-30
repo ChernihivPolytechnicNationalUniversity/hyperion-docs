@@ -1,0 +1,38 @@
+@startuml
+!include /plantuml/themes/puml-theme-x-light.puml
+
+' TODO: Replace with actual schema
+
+entity User {
+  * id : UUID <<PK>>
+  --
+  * email : String
+  * name : String
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity Course {
+  * id : UUID <<PK>>
+  --
+  * title : String
+  * description : Text <<nullable>>
+  instructor_id : UUID <<FK>>
+  created_at : DateTime
+  updated_at : DateTime
+}
+
+entity Enrollment {
+  * id : UUID <<PK>>
+  --
+  * user_id : UUID <<FK>>
+  * course_id : UUID <<FK>>
+  enrolled_at : DateTime
+  status : String
+}
+
+User ||--o{ Enrollment : "enrolls in"
+Course ||--o{ Enrollment : "has"
+User ||--o{ Course : "instructs"
+
+@enduml
