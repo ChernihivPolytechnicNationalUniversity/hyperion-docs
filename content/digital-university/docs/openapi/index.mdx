@@ -6,36 +6,10 @@ icon: Code
 
 # API Reference
 
-This section contains auto-generated API documentation from the OpenAPI specification for the University Faculty Work Portal.
+This section contains auto-generated API documentation from the OpenAPI specification for the project
 
-## API Overview
-
-The University Faculty Work Portal API provides endpoints for:
-
-- **Authentication** - Login, logout, token refresh, password management
-- **Activities** - Managing faculty work activities and details
-- **Departments** - Department CRUD and user assignments
-- **Faculties** - Faculty management
-- **Institutes** - Institute management
-- **Users** - User management and profile operations
-- **Ratings** - Teacher and department rating retrieval
-- **Dictionary** - Dictionary item management
-- **System** - Read-only mode controls
-
-## Base URL
+Regenerate API description via [turborepo](https://turborepo.dev/) :
 
 ```
-https://api.example.com/api
+pnpm build:openapi
 ```
-
-## Authentication
-
-Most endpoints require JWT authentication. Obtain a token via the [login endpoint](/docs/digital-university/openapi/login) and include it in the `Authorization` header:
-
-```
-Authorization: Bearer <token>
-```
-
-## Browse Endpoints
-
-Navigate the sidebar to explore individual API endpoints grouped by their functionality.

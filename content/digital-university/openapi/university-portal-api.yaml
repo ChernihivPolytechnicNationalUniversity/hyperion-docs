@@ -19,10 +19,10 @@ info:
     email: api@stu.cn.ua
 
 servers:
-  - url: https://api.stu.cn.ua/v1
+  - url: https://npp.stu.cn.ua/api/v1
     description: Production server
-  - url: http://localhost:8080/v1
-    description: Development server
+  # - url: http://localhost:8080/api/v1
+  #   description: Development server
 
 tags:
   - name: Auth
