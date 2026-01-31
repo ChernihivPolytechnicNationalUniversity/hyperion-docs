@@ -2,9 +2,10 @@
   "title": "Digital University",
   "pages": [
     "adr",
+    "c4",
+    "erd",
     "solution-designs",
     "sequence",
-    "erd",
-    "c4"
+    "strategy"
   ]
 }

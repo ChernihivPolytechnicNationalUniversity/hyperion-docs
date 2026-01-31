@@ -35,8 +35,11 @@ const resolveIncludes = async (content: string, baseDir: string, includedFiles: 
   while ((match = includeRegex.exec(content)) !== null) {
     const includePath = match[1].trim();
     
-    // Skip system includes (like !include <C4/C4_Container>)
-    if (includePath.startsWith('<') && includePath.endsWith('>')) {
+    // Skip system includes:
+    // - Angle bracket includes (like !include <C4/C4_Container>)
+    // - Absolute path includes (like !include /plantuml/themes/puml-theme-x-light.puml)
+    // These are handled by Kroki/PlantUML directly
+    if ((includePath.startsWith('<') && includePath.endsWith('>')) || includePath.startsWith('/')) {
       console.log(`Skipping system include: ${includePath}`);
       continue;
     }

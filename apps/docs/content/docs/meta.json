@@ -2,10 +2,13 @@
   "title": "Digital University",
   "pages": [
     "architecture",
-    "---Standards & Process---",
-    "agreements",
+    "agreement",
+    "support",
     "guidelines",
     "process",
+    "openapi",
+    "---Legacy---",
+    "legacy",
     "---Archive---",
     "_backup"
   ]
