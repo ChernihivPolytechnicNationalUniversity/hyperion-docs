@@ -1,3 +1,9 @@
+---
+title: Documentation Types
+description: When to use each type of documentation - ADRs, Agreements, Processes, Guidelines, Solution Designs, and more
+icon: FileText
+---
+
 # Documentation Types
 
 This guide explains the different types of documentation we maintain and when to use each one.
@@ -6,17 +12,16 @@ This guide explains the different types of documentation we maintain and when to
 
 | Type | What | When to Create | Location | Example |
 |------|------|----------------|----------|---------|
-| **ADR** | High-level architectural decisions + WHY | When choosing architecture approach | `/architecture/{project}/adr/` | "Trunk-based development", "Microservices architecture" |
-| **Agreement** | Technical standards and conventions | When selecting specific tools/practices | `/agreements/{lang}/` | "PHPStan level 8 for PHP", "ESLint rules for TypeScript" |
-| **Process** | Workflow - WHO, WHEN, WHAT sequence | When establishing new team process | `/process/{topic}/` | "Duty Process", "Branch Strategy" |
-| **Guideline** | Technical HOW TO instructions | When documenting implementation steps | `/guidelines/{topic}/` | "PHP Tracing Integration", "Go Data Isolation" |
-| **Solution Design** | Feature/project design document | Before implementing major features | `/architecture/{project}/solution-designs/{solution-number}/` | Feature design, System design |
-| **Test Design** | Testing strategy for feature | Together with Solution Design | `/architecture/{project}/solution-designs/{solution-number}/` | Feature test plan, QA strategy |
-| **C4 Diagram** | Architecture visualization (4 levels) | When architecture changes | `/architecture/{project}/c4/` | System Context, Container diagram |
-| **Sequence Diagram** | Step-by-step component interactions | When showing flow between services | `/architecture/{project}/sequence/` | Payment flow, Auth flow |
-| **ERD** | Data structure and relationships | When designing/changing database | `/architecture/{project}/erd/` | Database schema |
-| **OpenAPI** | REST API specification | When creating/modifying API | `/openapi/{project}/{service}/` | API endpoints, schemas |
-| **Strategy** | Architectural strategy documents | For long-term direction | `/architecture/{project}/strategy/` | Modernization approach |
+| **ADR** | High-level architectural decisions + WHY | When choosing architecture approach | `/docs/architecture/{adr}/` | "Trunk-based development", "Microservices architecture" |
+| **Agreement** | Technical standards and conventions | When selecting specific tools/practices | `/docs/agreement/` | "PHPStan level 8 for PHP", "ESLint rules for TypeScript" |
+| **Process** | Workflow - WHO, WHEN, WHAT sequence | When establishing new team process | `/docs/process/` | "Duty Process", "Branch Strategy" |
+| **Solution Design** | Feature/project design document | Before implementing major features | `/docs/architecture/solution-designs/{number}/` | Feature design, System design |
+| **Test Design** | Testing strategy for feature | Together with Solution Design | `/docs/architecture/solution-designs/{number}/` | Feature test plan, QA strategy |
+| **C4 Diagram** | Architecture visualization (4 levels) | When architecture changes | `/docs/architecture/c4/` | System Context, Container diagram |
+| **Sequence Diagram** | Step-by-step component interactions | When showing flow between services | `/docs/architecture/sequence/` | Payment flow, Auth flow |
+| **ERD** | Data structure and relationships | When designing/changing database | `/docs/architecture/erd/` | Database schema |
+| **OpenAPI** | REST API specification | When creating/modifying API | `/openapi/` | API endpoints, schemas |
+| **Strategy** | Architectural strategy documents | For long-term direction | `/docs/architecture/strategy/` | Modernization approach |
 
 ## When to Use Each Type
 
@@ -29,7 +34,7 @@ This guide explains the different types of documentation we maintain and when to
 - Deciding on authentication approach
 - Trunk-based development vs GitFlow
 
-**Template**: [templates/adr-template.md](../templates/adr-template.md)
+**Template**: [ADR Template](/docs/platform/templates/adr)
 
 ### Agreement
 **Use when**: Teams need to agree on technical standards, conventions, or tool configurations.
@@ -40,7 +45,7 @@ This guide explains the different types of documentation we maintain and when to
 - Testing requirements
 - Code review standards
 
-**Template**: [templates/agreement-template.md](../templates/agreement-template.md)
+**Template**: [Agreement Template](/docs/platform/templates/agreement)
 
 ### Process
 **Use when**: You need to document a workflow that involves multiple people and steps.
@@ -51,18 +56,7 @@ This guide explains the different types of documentation we maintain and when to
 - Release process
 - Incident response procedure
 
-**Template**: [templates/process-template.md](../templates/process-template.md)
-
-### Guideline
-**Use when**: You need step-by-step instructions for implementing something technical.
-
-**Examples**:
-- How to integrate tracing in PHP
-- Data isolation implementation guide
-- Setting up local development environment
-- Deploying to production
-
-**Template**: [templates/guideline-template.md](../templates/guideline-template.md)
+**Template**: [Process Template](/docs/platform/templates/process)
 
 ### Solution Design
 **Use when**: Planning a significant feature or system component before implementation.
@@ -73,7 +67,7 @@ This guide explains the different types of documentation we maintain and when to
 - API versioning approach
 - Data migration plan
 
-**Template**: [templates/solution-design-template.md](../templates/solution-design-template.md)
+**Template**: [Solution Design Template](/docs/platform/templates/solution-design)
 
 ### Test Design
 **Use when**: Creating solution design - always pair these together.
@@ -84,7 +78,7 @@ This guide explains the different types of documentation we maintain and when to
 - Performance testing approach
 - Integration test plan
 
-**Template**: [templates/test-design-template.md](../templates/test-design-template.md)
+**Template**: [Test Design Template](/docs/platform/templates/test-design)
 
 ### C4 Diagram
 **Use when**: Documenting system architecture at different abstraction levels.
@@ -95,7 +89,7 @@ This guide explains the different types of documentation we maintain and when to
 3. **Component**: Internal structure of containers
 4. **Code**: Class-level details (optional)
 
-**See**: [Diagram Guide](diagram-guide.md#c4-architecture-diagrams)
+**See**: [Diagram Guide](/docs/platform/guides/diagram-guide#c4-architecture-diagrams)
 
 ### Sequence Diagram
 **Use when**: Showing interactions between components over time.
@@ -106,7 +100,7 @@ This guide explains the different types of documentation we maintain and when to
 - Payment transaction
 - Data synchronization
 
-**Template**: [templates/sequence-diagram-template.md](../templates/sequence-diagram-template.md)
+**Template**: [Sequence Diagram Template](/docs/platform/templates/sequence-diagram)
 
 ### ERD (Entity Relationship Diagram)
 **Use when**: Designing or documenting database schema.
@@ -116,7 +110,7 @@ This guide explains the different types of documentation we maintain and when to
 - Data model documentation
 - Schema migration planning
 
-**Template**: [templates/erd-template.md](../templates/erd-template.md)
+**Template**: [ERD Template](/docs/platform/templates/erd)
 
 ### OpenAPI
 **Use when**: Defining or documenting REST APIs.
@@ -143,7 +137,6 @@ This guide explains the different types of documentation we maintain and when to
 - **ADR for decisions**: Document WHY you chose something, not just WHAT
 - **Agreement for standards**: Document what teams agreed to follow
 - **Process for workflows**: Document WHO, WHEN, WHAT
-- **Guideline for instructions**: Document HOW TO step-by-step
 - **Solution Design before code**: Always design before implementing features
 
 ### Pair Related Documents
@@ -162,7 +155,6 @@ This guide explains the different types of documentation we maintain and when to
 
 - Mark ADRs as Deprecated/Superseded when no longer valid
 - Review Agreements periodically
-- Update Guidelines when tools/APIs change
 - Keep Solution Designs as historical record (don't delete)
 
 ## Examples

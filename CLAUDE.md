@@ -33,29 +33,61 @@ This repository serves **two separate purposes**:
 
 **If you're here to write/update documentation for your projects**, you need:
 
-- **Documentation Standards**: [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md)
-- **Templates**: [docs/templates/](docs/templates/) (ADR, Solution Design, ERD, etc.)
-- **Guides**: [docs/guides/](docs/guides/)
+- **Documentation Standards**: `/docs/platform/contributing` (in the UI) or `content/_platform/docs/contributing.mdx`
+- **Templates**: `content/_platform/templates/` (ADR, Solution Design, ERD, etc.)
+- **Guides**: `/docs/platform/guides/` (in the UI) or `content/_platform/docs/guides/`
   - When to use each doc type
   - Diagram usage & theming
   - Writing standards
 
+**Content Structure** (multi-project support):
+```
+content/
+├── _platform/                     # Platform documentation
+│   ├── docs/                     # MDX documentation (guides, contributing)
+│   └── templates/                # Document templates (.md files)
+│
+├── digital-university/           # First project
+│   ├── docs/                     # MDX documentation
+│   │   ├── architecture/
+│   │   ├── agreement/
+│   │   └── process/
+│   ├── diagrams/                 # PlantUML, Mermaid files
+│   │   ├── c4/
+│   │   ├── erd/
+│   │   ├── seq/
+│   │   └── solution-designs/
+│   └── openapi/                  # OpenAPI specs
+│
+└── [future-projects]/            # Same structure
+```
+
 **Platform Capabilities** (what you can use):
 - Diagram types: PlantUML, Mermaid, Graphviz, C4
 - MDX components: `<Diagram>`, clickable/zoomable diagrams
-- Diagram files: Place in `apps/docs/diagrams/`
-- Content files: Place in `apps/docs/content/docs/`
+- Diagram files: Place in `content/{project}/diagrams/`
+- Content files: Place in `content/{project}/docs/`
+
+**Diagram Path Format**:
+```mdx
+{/* Diagrams use project-prefixed paths from /content */}
+<Diagram
+  lang="plantuml"
+  path="digital-university/diagrams/c4/system-context.puml"
+  alt="System context diagram"
+/>
+```
 
 **Common Author Commands**:
 ```bash
 pnpm dev              # Preview your documentation
-pnpm build:openapi    # Generate API docs from YAML
+pnpm build:openapi    # Generate API docs from YAML (scans all projects)
 ```
 
 **Verification Workflow**:
 When making changes to documentation structure or diagrams:
 1. **Verify UI renders correctly** via Playwright MCP browser testing
-   - Navigate to the affected pages
+   - Navigate to the affected pages (e.g., `/docs/digital-university/architecture/c4/system-context`)
    - Confirm diagrams render (PlantUML/C4 via Kroki, Mermaid client-side)
    - Check navigation structure updates properly
 2. **Check Docker container logs** for any errors:
@@ -179,6 +211,27 @@ This is a monorepo with a two-service architecture orchestrated via Docker Compo
 
 The services communicate internally via Docker networking, with the docs service proxying diagram requests to Kroki.
 
+### Multi-Project Content Structure
+
+The platform supports multiple documentation projects. Each project lives in `/content/{project-name}/` with its own docs, diagrams, and OpenAPI specs.
+
+**Source Configuration** (`apps/docs/source.config.ts`):
+- Each project defines its own `defineDocs()` configuration
+- Projects export named sources (e.g., `platform`, `digitalUniversity`)
+
+**Routing** (`apps/docs/src/app/docs/`):
+- `/docs/` - Index page listing all projects
+- `/docs/platform/[[...slug]]/` - Platform documentation
+- `/docs/digital-university/[[...slug]]/` - Digital University project
+
+**Adding a New Project**:
+1. Create directory: `content/{project-name}/docs/`, `content/{project-name}/diagrams/`
+2. Add to `source.config.ts`: Define new docs source
+3. Update `src/lib/source.ts`: Add new loader
+4. Create route: `src/app/docs/{project-name}/[[...slug]]/page.tsx`
+5. Create layout: `src/app/docs/{project-name}/layout.tsx`
+6. Update docs index page to list the new project
+
 ### Diagram Rendering Flow
 
 There are **two distinct rendering paths** depending on diagram type:
@@ -188,10 +241,10 @@ There are **two distinct rendering paths** depending on diagram type:
 MDX File → <Diagram> Component → /api/diagram Route → Kroki Service → SVG
 ```
 
-1. MDX files use `<Diagram lang="plantuml" path="relative/path.puml" />`
+1. MDX files use `<Diagram lang="plantuml" path="project-name/diagrams/path.puml" />`
 2. Component fetches from `/api/diagram?lang=plantuml&path=...`
 3. API route (`apps/docs/src/app/api/diagram/route.ts`):
-   - Reads file from `apps/docs/diagrams/` (security: path must resolve within BASE_DIR)
+   - Reads file from `/content/` (security: path must resolve within CONTENT_DIR)
    - Resolves `!include` directives recursively (see below)
    - Validates file size (max 256KB)
    - Compresses content with pako (deflate + base64 encoding)
@@ -213,7 +266,7 @@ MDX File → <Diagram> Component → Mermaid Library → SVG
 
 The API route implements a sophisticated `!include` directive resolver (`resolveIncludes` function) that:
 - **Recursively resolves** PlantUML includes before sending to Kroki
-- **Security**: All included paths must resolve within `apps/docs/diagrams/`
+- **Security**: All included paths must resolve within `/content/`
 - **Circular include detection**: Tracks included files to prevent infinite loops
 - **System includes**: Skips includes like `<C4/C4_Container>` (Kroki handles these)
 - **Tag cleanup**: Removes `@startuml`/`@enduml` from included files to prevent nesting issues
@@ -223,8 +276,8 @@ When working with PlantUML files that use `!include`, the entire resolved conten
 ### Security Model
 
 **Path Traversal Protection**:
-- All diagram paths are resolved with `path.resolve(BASE_DIR, relPath)`
-- Validation: `if (!abs.startsWith(BASE_DIR))` blocks access outside `diagrams/`
+- All diagram paths are resolved with `path.resolve(CONTENT_DIR, relPath)`
+- Validation: `if (!abs.startsWith(CONTENT_DIR))` blocks access outside `/content/`
 - Applies to both main files and `!include` directives
 
 **Size Limits**:
@@ -245,15 +298,17 @@ The `<Diagram>` component integrates with a modal system:
 
 ### Platform File Structure
 
-**Content & Documentation**:
-- MDX Documentation: `apps/docs/content/docs/` (processed by Fumadocs)
-- Diagram Source Files: `apps/docs/diagrams/` (referenced via relative paths)
-- OpenAPI Specs: `apps/docs/openapi/` (generates MDX via `pnpm build:openapi`)
+**Content & Documentation** (in `/content/`):
+- MDX Documentation: `content/{project}/docs/` (processed by Fumadocs)
+- Diagram Source Files: `content/{project}/diagrams/` (referenced via project-prefixed paths)
+- OpenAPI Specs: `content/{project}/openapi/` (generates MDX via `pnpm build:openapi`)
+- Platform templates: `content/_platform/templates/` (not rendered, just templates)
 
-**Platform Source Code**:
+**Platform Source Code** (in `/apps/docs/`):
 - Diagram API: `apps/docs/src/app/api/diagram/route.ts`
 - Components: `apps/docs/src/components/`
-- Configuration: `source.config.ts`, `turbo.json`
+- Source loaders: `apps/docs/src/lib/source.ts`
+- Configuration: `apps/docs/source.config.ts`, `turbo.json`
 
 ### Extending Diagram Types
 
@@ -273,7 +328,7 @@ To add support for new diagram languages (e.g., D2, Excalidraw):
    - Icon: `apps/docs/src/components/icons/`
    - Name: `apps/docs/src/lib/constants.ts` (LANG_NAME_MAP)
 
-4. Use in MDX: `<Diagram lang="d2" path="my-diagram.d2" />`
+4. Use in MDX: `<Diagram lang="d2" path="project-name/diagrams/my-diagram.d2" />`
 
 ### Turbo & Monorepo Setup
 
@@ -288,5 +343,6 @@ To add support for new diagram languages (e.g., D2, Excalidraw):
 
 The Docker Compose setup mounts source directories as volumes:
 - `./apps/docs:/app/apps/docs` - Source code hot reload
+- `./content:/app/content` - Content hot reload
 - `.next` cache is a named volume (persists across restarts but doesn't block HMR)
 - `WATCHPACK_POLLING=true` ensures file watching works in Docker on all platforms

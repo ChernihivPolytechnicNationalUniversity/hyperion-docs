@@ -1,3 +1,9 @@
+---
+title: Diagram Guide
+description: Using diagrams in Hyperion Docs - PlantUML, Mermaid, Graphviz, C4, theming, and best practices
+icon: Image
+---
+
 # Diagram Guide
 
 This guide covers everything about using diagrams in Hyperion Docs: PlantUML, Mermaid, Graphviz, C4, theming, and best practices.
@@ -27,13 +33,14 @@ This guide covers everything about using diagrams in Hyperion Docs: PlantUML, Me
 ```mdx
 <Diagram
   lang="plantuml"
-  path="architecture/system-overview.puml"
+  path="project-name/diagrams/architecture/system-overview.puml"
   alt="System architecture showing main components"
 />
 ```
 
 **Path Rules**:
-- All paths are relative to `apps/docs/diagrams/` directory
+- All paths are relative to the `/content` directory
+- Use the project prefix: `project-name/diagrams/...`
 - Use subdirectories to organize: `architecture/`, `sequence/`, etc.
 
 ### Inline Diagrams (Mermaid Only)
@@ -60,7 +67,7 @@ The C4 model provides four levels of architecture visualization:
 
 ### C4 with PlantUML
 
-```plantuml
+```text
 @startuml
 !include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
@@ -76,7 +83,7 @@ Rel(app, api, "Calls")
 
 ### C4 with Mermaid (Recommended for Simpler Diagrams)
 
-```mermaid
+```text
 C4Context
     title System Context diagram for Docs System
 
@@ -96,7 +103,7 @@ C4Context
 
 PlantUML themes provide consistent styling across diagrams:
 
-```plantuml
+```text
 @startuml
 !include /plantuml/themes/puml-theme-x-light.puml
 
@@ -104,7 +111,7 @@ PlantUML themes provide consistent styling across diagrams:
 @enduml
 ```
 
-Store theme files in `apps/docs/diagrams/themes/` directory.
+Store theme files in your project's `diagrams/themes/` directory.
 
 ### Theme Components
 
@@ -112,7 +119,7 @@ Store theme files in `apps/docs/diagrams/themes/` directory.
 
 Define color meanings:
 
-```plantuml
+```text
 legend
 !define EXTERNAL_SERVICE #8EC8F6
 !define DEPRECATED #CF2907
@@ -129,7 +136,7 @@ endlegend
 
 Customize diagram appearance:
 
-```plantuml
+```text
 '' Color definitions
 !$BLACK = "#000000"
 !$MAGENTA = "#FF00FF"
@@ -161,7 +168,7 @@ skinparam sequence {
 
 Define consistent colors for service types:
 
-```plantuml
+```text
 '' Service type colors
 !$SAGA = $LIGHT_PURPLE
 !$DEPRECATED = $RED
@@ -170,7 +177,7 @@ Define consistent colors for service types:
 
 Apply to actors:
 
-```plantuml
+```text
 @startuml
 !include /plantuml/themes/puml-theme-x-light.puml
 
@@ -187,7 +194,7 @@ Payment -> Legacy: Update
 
 Use `<style>` blocks for advanced styling:
 
-```plantuml
+```text
 <style>
 node {
     Padding 12
@@ -212,7 +219,7 @@ PlantUML supports `!include` for reusable diagram components.
 
 ### Usage
 
-```plantuml
+```text
 @startuml
 !include path/to/base-diagram.puml
 
@@ -229,7 +236,7 @@ PlantUML supports `!include` for reusable diagram components.
 
 ### Security
 
-- All included files must be within `diagrams/` directory
+- All included files must be within your project's `diagrams/` directory
 - Path traversal protection enforced
 - Circular include detection prevents infinite loops
 
@@ -241,7 +248,7 @@ Follow these best practices for sequence diagrams (PlantUML or Mermaid):
 
 Use descriptive, unambiguous names:
 
-```plantuml
+```text
 participant "User" as User
 participant "Customer Portal" as Portal
 participant "Customer BFF" as BFF
@@ -252,7 +259,7 @@ participant "Customer API" as API
 
 Show both request and response flows:
 
-```plantuml
+```text
 User -> Portal: Request
 Portal -> BFF: Forward request
 BFF --> Portal: Response
@@ -263,7 +270,7 @@ Portal --> User: Result
 
 Show when an object is active/processing:
 
-```plantuml
+```text
 User -> Portal: Request
 activate Portal
 Portal -> BFF: Forward
@@ -278,7 +285,7 @@ deactivate Portal
 
 Use appropriate syntax:
 
-```plantuml
+```text
 alt success case
     Service --> Client: 200 OK
 else failure case
@@ -290,7 +297,7 @@ end
 
 Include error scenarios:
 
-```plantuml
+```text
 Service -> Database: Query
 alt query succeeds
     Database --> Service: Results
@@ -321,7 +328,7 @@ Always provide descriptive `alt` text:
 ```mdx
 <Diagram
   lang="plantuml"
-  path="architecture.puml"
+  path="project-name/diagrams/architecture.puml"
   alt="System architecture showing docs app, API, and Kroki service"
 />
 ```
@@ -333,7 +340,7 @@ Always provide descriptive `alt` text:
 - Enforced before rendering
 
 ### Path Validation
-- All diagram paths must resolve within `diagrams/` directory
+- All diagram paths must resolve within the `/content` directory
 - Path traversal attempts are blocked
 - Applies to both main files and `!include` directives
 
@@ -354,17 +361,17 @@ Always provide descriptive `alt` text:
 ### Component Syntax
 
 ```mdx
-<!-- PlantUML external file -->
-<Diagram lang="plantuml" path="architecture.puml" alt="Architecture diagram" />
+{/* PlantUML external file */}
+<Diagram lang="plantuml" path="project-name/diagrams/architecture.puml" alt="Architecture diagram" />
 
-<!-- Graphviz external file -->
-<Diagram lang="graphviz" path="flow.dot" alt="Flow diagram" />
+{/* Graphviz external file */}
+<Diagram lang="graphviz" path="project-name/diagrams/flow.dot" alt="Flow diagram" />
 
-<!-- Mermaid inline -->
+{/* Mermaid inline */}
 <Diagram lang="mermaid" chart="graph TD; A-->B;" />
 
-<!-- C4 Model -->
-<Diagram lang="c4plantuml" path="c4-architecture.puml" alt="C4 diagram" />
+{/* C4 Model */}
+<Diagram lang="c4plantuml" path="project-name/diagrams/c4-architecture.puml" alt="C4 diagram" />
 ```
 
 ## Resources

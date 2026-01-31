@@ -1,3 +1,9 @@
+---
+title: Writing Guide
+description: Writing style, formatting standards, and content guidelines for documentation
+icon: Pen
+---
+
 # Writing Guide
 
 This guide covers writing style, formatting standards, and content guidelines for Hyperion Docs documentation.
@@ -62,11 +68,11 @@ pnpm dev
 Use descriptive link text:
 
 ```mdx
-<!-- Good -->
-See the [diagram usage guide](diagram-guide.md) for details.
+{/* Good */}
+See the [diagram usage guide](/docs/platform/guides/diagram-guide) for details.
 
-<!-- Avoid -->
-Click [here](diagram-guide.md) for details.
+{/* Avoid */}
+Click [here](/docs/platform/guides/diagram-guide) for details.
 ```
 
 ### Internal Links
@@ -175,8 +181,8 @@ Use blockquotes for important information:
 When referencing files or directories:
 
 ```mdx
-- File: `apps/docs/content/docs/index.mdx`
-- Directory: `apps/docs/diagrams/`
+- File: `content/project-name/docs/index.mdx`
+- Directory: `content/project-name/diagrams/`
 - Relative: `diagrams/architecture.puml`
 ```
 
@@ -239,7 +245,7 @@ This diagram shows a basic request-response interaction between a user and syste
 Use clear placeholders for variable content:
 
 ```mdx
-`/architecture/{project}/adr/`
+`/docs/architecture/{project}/adr/`
 `ADR-{number}: Decision Title`
 ```
 
@@ -258,7 +264,7 @@ Always provide descriptive alt text:
 ```mdx
 <Diagram
   lang="plantuml"
-  path="architecture.puml"
+  path="project-name/diagrams/architecture.puml"
   alt="System architecture showing docs app, API route, and Kroki service with data flow arrows"
 />
 ```
@@ -268,11 +274,11 @@ Always provide descriptive alt text:
 Make link text meaningful:
 
 ```mdx
-<!-- Good -->
-See the [solution design template](../templates/solution-design-template.md).
+{/* Good */}
+See the [solution design template](/docs/platform/templates/solution-design).
 
-<!-- Avoid -->
-See [this](../templates/solution-design-template.md).
+{/* Avoid */}
+See [this](/docs/platform/templates/solution-design).
 ```
 
 ## Common Mistakes to Avoid

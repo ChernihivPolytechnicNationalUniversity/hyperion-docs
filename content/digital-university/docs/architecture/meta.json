@@ -1,6 +1,7 @@
 {
-  "title": "Digital University",
+  "title": "Architecture",
   "pages": [
+    "index",
     "adr",
     "glossary",
     "c4",

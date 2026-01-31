@@ -1,6 +1,8 @@
 {
   "title": "Digital University",
+  "root": true,
   "pages": [
+    "index",
     "architecture",
     "agreement",
     "process"

@@ -4,7 +4,10 @@ import { type NextRequest, NextResponse } from 'next/server';
 
 export const runtime = 'nodejs';
 
-const BASE_DIR = path.resolve(process.cwd(), 'diagrams');
+// Content directory containing all project diagrams
+// Paths should be like: project-name/diagrams/...
+const CONTENT_DIR = path.resolve(process.cwd(), '../../content');
+const BASE_DIR = CONTENT_DIR;
 const LANG_MAP: Record<string, string> = {
   puml: 'plantuml',
   plantuml: 'plantuml',
