@@ -13,3 +13,6 @@ coverage/
 .map
 
 apps/docs/content/**/(generated)/**
+
+# Playwright MCP testing artifacts
+.playwright-mcp/
