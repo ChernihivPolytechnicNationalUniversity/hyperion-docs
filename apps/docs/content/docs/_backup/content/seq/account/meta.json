@@ -1,9 +1,0 @@
-{
-  "title": "Account Sequence",
-  "description": "Account Sequence Overview",
-  "pages": [
-    "create-customer",
-    "deactivate-customer-list",
-    "home"
-  ]
-}
