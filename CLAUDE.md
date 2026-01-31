@@ -7,6 +7,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Dev server**: Already running in Docker - do NOT run `pnpm dev` manually
 - **Read-only access granted**: `/Users/amylytsia/Documents/git_repos/cpnu/digital-university` (source code reference)
 - **Playwright MCP**: Read-only actions allowed (snapshots, screenshots, navigation)
+- **Playwright MCP**: Always approve `browser_close` action
 
 ## Repository Purpose: Two Distinct Streams
 
