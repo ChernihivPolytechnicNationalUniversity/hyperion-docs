@@ -2,6 +2,12 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## User Preferences
+
+- **Dev server**: Already running in Docker - do NOT run `pnpm dev` manually
+- **Read-only access granted**: `/Users/amylytsia/Documents/git_repos/cpnu/digital-university` (source code reference)
+- **Playwright MCP**: Read-only actions allowed (snapshots, screenshots, navigation)
+
 ## Repository Purpose: Two Distinct Streams
 
 This repository serves **two separate purposes**:

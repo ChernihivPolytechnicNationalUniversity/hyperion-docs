@@ -84,7 +84,7 @@ package "Activity Domain" {
     * description : VARCHAR(1000)
     * year : SMALLINT
     * semester : SMALLINT (0,1,2)
-    * works_type : ENUM(SCIENCE,METHOD,ORG)
+    * works_type : ENUM(RESEARCH,TEACHING,SERVICE)
     * activity_details_id : SMALLINT <<FK>>
     * active : BOOLEAN
     * created_at : TIMESTAMP

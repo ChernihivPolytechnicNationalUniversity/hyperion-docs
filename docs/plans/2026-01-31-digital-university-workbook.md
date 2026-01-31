@@ -162,11 +162,11 @@ These items need clarification or additional input:
 | ADMIN | System admin | + CRUD users, dictionaries, structure |
 
 ### Work Types
-| Code | Ukrainian | English |
-|------|-----------|---------|
-| SCIENCE | Наукова робота | Scientific work |
-| METHOD | Методична робота | Methodological work |
-| ORG | Організаційна робота | Organizational work |
+| Code | Short | Full |
+|------|-------|------|
+| RESEARCH | Research | Research Activities |
+| TEACHING | Teaching | Teaching and Curriculum Development |
+| SERVICE | Service | Academic Service and Administration |
 
 ### Key Entities
 | Entity | Purpose |

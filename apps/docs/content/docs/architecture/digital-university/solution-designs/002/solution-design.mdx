@@ -60,11 +60,11 @@ Faculty members perform various types of professional work throughout the academ
 Rating = Σ (Activity.coefficient × Activity.normTime)
 
 Per Activity Type:
-- Scientific Rating = Σ (SCIENCE activities × coefficients)
-- Methodological Rating = Σ (METHOD activities × coefficients)
-- Organizational Rating = Σ (ORG activities × coefficients)
+- Research Rating = Σ (RESEARCH activities × coefficients)
+- Teaching Rating = Σ (TEACHING activities × coefficients)
+- Service Rating = Σ (SERVICE activities × coefficients)
 
-Total Rating = Scientific + Methodological + Organizational
+Total Rating = Research + Teaching + Service
 ```
 
 ## Scope
@@ -167,7 +167,7 @@ Total Rating = Scientific + Methodological + Organizational
 
 ## Activity Types
 
-### Scientific Work (SCIENCE)
+### Research Activities (RESEARCH)
 Examples:
 - Publications in indexed journals (Scopus, WoS)
 - Monographs and textbooks
@@ -176,7 +176,7 @@ Examples:
 - Conference presentations
 - PhD supervision
 
-### Methodological Work (METHOD)
+### Teaching and Curriculum Development (TEACHING)
 Examples:
 - Curriculum development
 - Teaching materials creation
@@ -184,7 +184,7 @@ Examples:
 - E-learning course development
 - Syllabus updates
 
-### Organizational Work (ORG)
+### Academic Service and Administration (SERVICE)
 Examples:
 - Committee membership
 - Conference organization
@@ -219,7 +219,7 @@ Examples:
 | Description | Required, 3-1000 chars |
 | Year | Required, 2020-2100 |
 | Semester | Required, 0 (year), 1, or 2 |
-| WorksType | Required, enum |
+| WorksType | Required, enum (RESEARCH, TEACHING, SERVICE) |
 | ActivityDetailsId | Required, must exist |
 | CoAuthorIds | Optional, valid user IDs |
 
