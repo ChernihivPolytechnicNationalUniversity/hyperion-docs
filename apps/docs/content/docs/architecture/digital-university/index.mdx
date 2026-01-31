@@ -1,14 +1,34 @@
 ---
 title: Digital University Architecture
-description: Architecture overview for Digital University project
+description: Architecture overview for the NPP (University Faculty Work Portal) project
 icon: GraduationCap
 ---
 
-# Digital University - Architecture Overview
+# Digital University - NPP Portal
 
-{/* TODO: Replace with actual project overview */}
+## Project Overview
 
-The Digital University project is [brief description of the project purpose and goals].
+The **NPP Portal** (Науково-педагогічні працівники / University Faculty Work Portal) is a comprehensive system for managing university faculty profiles and tracking their professional activities.
+
+**Domain**: `npp.stu.cn.ua`
+
+### Purpose
+
+The system addresses two core business needs:
+
+1. **Personal Account Management** - Centralized profiles for university employees (lecturers, assistants, professors) containing academic credentials, department assignments, and professional information.
+
+2. **Work Reporting & Evaluation** - Structured reporting of scientific, methodological, and organizational work with automated rating calculations for performance evaluation.
+
+### Key Capabilities
+
+- Faculty profile management with academic degrees, positions, and honors
+- Multi-department assignment support (joint positions, workload tracking)
+- Activity reporting by type (Scientific, Methodological, Organizational)
+- Co-authorship tracking for collaborative work
+- Rating and statistics calculation per teacher and department
+- Public access to faculty information and activities
+- Role-based access control with four distinct user levels
 
 ## Architecture Sections
 
@@ -37,16 +57,37 @@ Multi-level architecture views from system context to containers.
 
 [View C4 Diagrams →](./c4)
 
+### Glossary
+Domain terminology with Ukrainian ↔ English translations.
+
+[View Glossary →](./glossary)
+
 ## Quick Links
 
 - [ADR-001: Initial Architecture](./adr/ADR-001-initial-architecture)
-- [Latest Solution Design](./solution-designs/001/solution-design)
+- [ADR-003: Authentication Strategy](./adr/ADR-003-authentication)
 - [System Context Diagram](./c4/system-context)
+- [Solution Design: Personal Account](./solution-designs/001/solution-design)
+- [Solution Design: Work Reporting](./solution-designs/002/solution-design)
+
+## User Roles
+
+| Role | Ukrainian | Description |
+|------|-----------|-------------|
+| **GUEST** | Гість | Unauthenticated public access |
+| **TEACHER** | Викладач | Faculty member - manages own profile and activities |
+| **DIRECTOR** | Завідувач/Декан | Department head - views department staff and statistics |
+| **ADMIN** | Адміністратор | Full system access - manages users, structure, dictionaries |
 
 ## Project Status
 
-{/* TODO: Update project status */}
-- **Status**: Planning / Development / Production
-- **Start Date**: YYYY-MM-DD
-- **Team**: [Team name]
-- **Tech Stack**: [List key technologies]
+- **Status**: Development
+- **Start Date**: 2026-01
+- **Organization**: Chernihiv Polytechnic National University (ЧНТУ)
+- **Tech Stack**:
+  - **Backend**: Spring Boot 3.x, Java 21
+  - **Frontend**: React 18, TypeScript, Vite
+  - **Database**: PostgreSQL
+  - **Auth**: JWT (Access: 30min, Refresh: 30days) + Redis
+  - **API**: REST, OpenAPI 3.0
+  - **Infrastructure**: Docker, Kubernetes

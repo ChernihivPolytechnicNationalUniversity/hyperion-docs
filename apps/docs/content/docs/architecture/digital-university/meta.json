@@ -2,6 +2,7 @@
   "title": "Digital University",
   "pages": [
     "adr",
+    "glossary",
     "c4",
     "erd",
     "solution-designs",

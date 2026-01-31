@@ -1,27 +1,83 @@
 ---
 title: Container Diagram
-description: Container-level architecture for Digital University
+description: Container-level architecture showing NPP Portal technical components
 ---
 
 # Container Diagram
 
-{/* TODO: Update with actual containers */}
+This C4 Level 2 diagram shows the technical building blocks (containers) that make up the NPP Portal.
 
-This diagram shows the high-level technical building blocks (containers) of Digital University.
-
-<Diagram lang="plantuml" path="architecture/digital-university/c4/container.puml" alt="Digital University container diagram" />
+<Diagram lang="plantuml" path="architecture/digital-university/c4/container.puml" alt="NPP Portal container diagram" />
 
 ## Containers
 
-### [Container 1 Name]
-**Technology**: [Tech stack]
-**Purpose**: [What this container does]
+### Web Application (SPA)
+| Attribute | Value |
+|-----------|-------|
+| **Technology** | React 18, TypeScript, Vite |
+| **Purpose** | Single-page application providing the user interface |
+| **Deployment** | Static files served via Nginx |
+| **Responsibilities** | UI rendering, form handling, API communication, state management |
 
-### [Container 2 Name]
-**Technology**: [Tech stack]
-**Purpose**: [What this container does]
+### API Server
+| Attribute | Value |
+|-----------|-------|
+| **Technology** | Spring Boot 3.x, Java 21 |
+| **Purpose** | REST API handling all business logic |
+| **Deployment** | Docker container in Kubernetes |
+| **Responsibilities** | Authentication, authorization, CRUD operations, rating calculations |
+
+### Cache & Session Store
+| Attribute | Value |
+|-----------|-------|
+| **Technology** | Redis 7.x |
+| **Purpose** | Token storage and data caching |
+| **Deployment** | Managed Redis or Kubernetes StatefulSet |
+| **Data Stored** | Refresh tokens, user session data, cached statistics |
+
+### Database
+| Attribute | Value |
+|-----------|-------|
+| **Technology** | PostgreSQL 15 |
+| **Purpose** | Persistent data storage |
+| **Deployment** | Managed PostgreSQL or Kubernetes StatefulSet |
+| **Data Stored** | Users, activities, organization structure, dictionaries |
 
 ## Inter-Container Communication
 
-- [Description of how containers interact]
-- [Communication protocols used]
+| From | To | Protocol | Purpose |
+|------|----|---------| --------|
+| Web App | API Server | HTTPS/JSON | All user interactions |
+| API Server | Database | JDBC/TCP:5432 | Data persistence |
+| API Server | Redis | TCP:6379 | Token management, caching |
+| API Server | Email System | SMTP:587 | Notifications |
+
+## Deployment View
+
+```
+┌─────────────────────────────────────────────────────┐
+│                 Kubernetes Cluster                   │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  │
+│  │   Nginx     │  │  API Pod    │  │  API Pod    │  │
+│  │  Ingress    │  │ (replica 1) │  │ (replica 2) │  │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  │
+│         │                │                │         │
+│         │         ┌──────┴────────────────┘         │
+│         │         │                                 │
+│  ┌──────▼──────┐  │  ┌─────────────┐               │
+│  │  SPA Static │  │  │    Redis    │               │
+│  │   (Nginx)   │  │  │  (Session)  │               │
+│  └─────────────┘  │  └─────────────┘               │
+│                   │                                 │
+│            ┌──────▼──────┐                         │
+│            │ PostgreSQL  │                         │
+│            │ (Primary)   │                         │
+│            └─────────────┘                         │
+└─────────────────────────────────────────────────────┘
+```
+
+## Related Diagrams
+
+- [System Context](./system-context) - External view
+- [ERD: Main Schema](../erd/main-schema) - Database structure
+- [ADR-001: Initial Architecture](../adr/ADR-001-initial-architecture)
