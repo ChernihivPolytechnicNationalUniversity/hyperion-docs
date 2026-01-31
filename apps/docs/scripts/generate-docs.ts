@@ -3,18 +3,21 @@ import { createOpenAPI } from 'fumadocs-openapi/server';
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 
-const CONTENT_DIR = path.resolve(process.cwd(), '../../content');
+// CONTENT_DIR must be relative from the script's working directory (apps/docs)
+// because fumadocs-openapi's generateFiles() joins the output path with cwd
+const CONTENT_DIR = '../../content';
+const CONTENT_DIR_ABS = path.resolve(process.cwd(), CONTENT_DIR);
 
 // Find all projects with openapi directories
 const findOpenAPIProjects = (): string[] => {
   const projects: string[] = [];
 
   try {
-    const entries = fs.readdirSync(CONTENT_DIR, { withFileTypes: true });
+    const entries = fs.readdirSync(CONTENT_DIR_ABS, { withFileTypes: true });
 
     for (const entry of entries) {
       if (entry.isDirectory() && !entry.name.startsWith('_')) {
-        const openapiDir = path.join(CONTENT_DIR, entry.name, 'openapi');
+        const openapiDir = path.join(CONTENT_DIR_ABS, entry.name, 'openapi');
         if (fs.existsSync(openapiDir)) {
           const yamlFiles = fs.readdirSync(openapiDir).filter(f => f.endsWith('.yaml') || f.endsWith('.yml'));
           if (yamlFiles.length > 0) {
@@ -41,13 +44,14 @@ const generateAllDocs = async () => {
   console.log(`Found OpenAPI specs in projects: ${projects.join(', ')}`);
 
   for (const project of projects) {
-    const openapiDir = path.join(CONTENT_DIR, project, 'openapi');
+    const openapiDirAbs = path.join(CONTENT_DIR_ABS, project, 'openapi');
+    // outputDir must be relative so fumadocs-openapi generates in the correct location
     const outputDir = path.join(CONTENT_DIR, project, 'docs', 'openapi', '(generated)');
 
     // Get all yaml files in the project's openapi directory
-    const yamlFiles = fs.readdirSync(openapiDir)
+    const yamlFiles = fs.readdirSync(openapiDirAbs)
       .filter(f => f.endsWith('.yaml') || f.endsWith('.yml'))
-      .map(f => path.join(openapiDir, f));
+      .map(f => path.join(openapiDirAbs, f));
 
     if (yamlFiles.length === 0) continue;
 

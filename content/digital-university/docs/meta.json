@@ -5,6 +5,7 @@
     "index",
     "architecture",
     "agreement",
-    "process"
+    "process",
+    "openapi"
   ]
 }
