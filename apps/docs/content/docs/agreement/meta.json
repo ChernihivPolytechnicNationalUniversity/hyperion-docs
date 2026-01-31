@@ -1,4 +1,4 @@
 {
-  "title": "Agreement",
-  "pages": ["common"]
+  "title": "Agreements",
+  "pages": ["common", "data-isolation"]
 }
