@@ -45,6 +45,18 @@ pnpm dev              # Preview your documentation
 pnpm build:openapi    # Generate API docs from YAML
 ```
 
+**Verification Workflow**:
+When making changes to documentation structure or diagrams:
+1. **Verify UI renders correctly** via Playwright MCP browser testing
+   - Navigate to the affected pages
+   - Confirm diagrams render (PlantUML/C4 via Kroki, Mermaid client-side)
+   - Check navigation structure updates properly
+2. **Check Docker container logs** for any errors:
+   ```bash
+   docker compose logs -f docs    # Watch docs service logs
+   docker compose logs -f kroki   # Watch Kroki service logs (diagram rendering)
+   ```
+
 **Git Workflow for Claude**:
 When making changes to documentation:
 1. **After completing a logical unit of work**, create a git commit
