@@ -3,10 +3,10 @@
   "root": true,
   "pages": [
     "index",
-    "4module-digital-signature",
     "architecture",
     "agreements",
     "process",
-    "openapi"
+    "openapi",
+    "drafts"
   ]
 }
