@@ -1,6 +1,7 @@
 import { type InferPageType, loader, type LoaderPlugin } from 'fumadocs-core/source';
 import { openapiPlugin } from 'fumadocs-openapi/server';
 import { platform, digitalUniversity } from '@/.source';
+import { safeLucideIconsPlugin } from './safe-lucide-icons-plugin';
 
 // See https://fumadocs.dev/docs/headless/source-api for more info
 
@@ -8,14 +9,14 @@ import { platform, digitalUniversity } from '@/.source';
 export const platformSource = loader({
   baseUrl: '/docs/platform',
   source: platform.toFumadocsSource(),
-  plugins: [lucideIconsPlugin()],
+  plugins: [safeLucideIconsPlugin()],
 });
 
 // Digital University project source
 export const digitalUniversitySource = loader({
   baseUrl: '/docs/digital-university',
   source: digitalUniversity.toFumadocsSource(),
-  plugins: [lucideIconsPlugin(), openapiPlugin() as LoaderPlugin],
+  plugins: [safeLucideIconsPlugin(), openapiPlugin() as LoaderPlugin],
 });
 
 // Legacy alias for backwards compatibility during migration
