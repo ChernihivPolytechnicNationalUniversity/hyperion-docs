@@ -6,9 +6,10 @@ description: Selection of PostgreSQL as the primary database for NPP Portal
 # ADR-002: Database Selection
 
 ## Status
-**Status**: Accepted
-**Date**: 2026-01-31
-**Decision Makers**: Development Team
+
+- **Status**: Accepted
+- **Date**: 2025-09-16
+- **Decision Makers**: Development Team
 
 ## Context
 
@@ -22,22 +23,22 @@ The NPP Portal requires a database to store:
 
 ### Requirements
 
-| Requirement | Priority |
-|-------------|----------|
-| ACID transactions | High |
-| Complex joins (user ↔ departments ↔ activities) | High |
-| JSON support for flexible activity details | Medium |
-| Full-text search for activity descriptions | Medium |
-| Horizontal scaling | Low (data volume is manageable) |
-| Team expertise | High |
-| Open source / no licensing costs | High |
+| Requirement                                     | Priority                        |
+| ----------------------------------------------- | ------------------------------- |
+| ACID transactions                               | High                            |
+| Complex joins (user ↔ departments ↔ activities) | Medium                          |
+| JSON support for flexible activity details      | High                            |
+| Full-text search for activity descriptions      | Low                             |
+| Horizontal scaling                              | Low (data volume is manageable) |
+| Team expertise                                  | High                            |
+| Open source / no licensing costs                | High                            |
 
 ### Data Characteristics
 
 - **Read-heavy** workload (reports, statistics, public views)
 - **Seasonal write patterns** (activity submission deadlines)
 - **Relational data model** with clear entity relationships
-- **Moderate data volume** (~100GB projected over 5 years)
+- **Moderate data volume** (~10GB projected over next 5 years)
 
 ## Decision
 
@@ -48,6 +49,7 @@ We will use **PostgreSQL 15+** as the primary database.
 ### Considered Options
 
 #### 1. PostgreSQL
+
 - **Pros**:
   - ACID compliance with strong transactional guarantees
   - Excellent Spring Data JPA integration
@@ -61,6 +63,7 @@ We will use **PostgreSQL 15+** as the primary database.
   - Requires DBA knowledge for optimization
 
 #### 2. MySQL/MariaDB
+
 - **Pros**:
   - Wide adoption, good performance
   - Simple replication setup
@@ -70,6 +73,7 @@ We will use **PostgreSQL 15+** as the primary database.
   - GPL licensing considerations
 
 #### 3. MongoDB
+
 - **Pros**:
   - Flexible schema for activity details
   - Native horizontal scaling
@@ -77,10 +81,10 @@ We will use **PostgreSQL 15+** as the primary database.
 - **Cons**:
   - **Eventual consistency by default** - problematic for ratings calculations
   - Complex joins require application-level logic
-  - Team lacks NoSQL expertise
   - Overkill for relational data model
 
 #### 4. Microsoft SQL Server
+
 - **Pros**:
   - Enterprise features, good tooling
   - Strong .NET integration (not relevant here)
@@ -91,6 +95,7 @@ We will use **PostgreSQL 15+** as the primary database.
 ### Chosen: PostgreSQL
 
 **Key factors**:
+
 1. **Relational model fits domain**: Users, departments, activities have clear relationships
 2. **JSONB for flexibility**: `ActivityDetails.additionalDetails` can store varying fields per activity type
 3. **Spring Data JPA**: First-class support with HikariCP connection pooling
@@ -100,6 +105,7 @@ We will use **PostgreSQL 15+** as the primary database.
 ## Consequences
 
 ### Positive
+
 - Reliable ACID transactions for rating calculations
 - Seamless Spring Data JPA integration
 - JSONB enables semi-structured data without schema migrations
@@ -107,31 +113,16 @@ We will use **PostgreSQL 15+** as the primary database.
 - Easy local development with Docker
 
 ### Negative
+
 - Requires proper indexing strategy for performance
 - Connection pool tuning needed for concurrent users
-- Backup/recovery requires operational expertise
 
 ### Neutral
+
 - Standard SQL skills are transferable
 - Liquibase/Flyway for schema migrations
 
 ## Implementation Notes
-
-### Configuration
-
-```yaml
-# application.yml
-spring:
-  datasource:
-    url: jdbc:postgresql://localhost:5432/npp_portal
-    driver-class-name: org.postgresql.Driver
-  jpa:
-    hibernate:
-      ddl-auto: validate
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-```
 
 ### Key Indexes
 
@@ -150,7 +141,7 @@ CREATE INDEX idx_departments_faculty_id ON departments(faculty_id);
 CREATE INDEX idx_faculties_institute_id ON faculties(institute_id);
 ```
 
-### Connection Pooling
+### Connection Pooling (Considerations for further scale, not needed right now)
 
 HikariCP configuration for ~50 concurrent users:
 
@@ -165,7 +156,6 @@ spring:
 ```
 
 ## References
-- [PostgreSQL Documentation](https://www.postgresql.org/docs/15/)
+
+- [PostgreSQL Documentation](https://www.postgresql.org/docs)
 - [Spring Data JPA Reference](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
-- [ADR-001: Initial Architecture](./ADR-001-initial-architecture)
-- [ERD: Main Schema](../erd/main-schema)

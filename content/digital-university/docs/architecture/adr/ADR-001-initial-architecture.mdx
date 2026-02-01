@@ -24,7 +24,7 @@ The university needs a system for managing faculty profiles and tracking profess
 
 - Limited budget for infrastructure and licensing
 - Team has experience with Java/Spring ecosystem
-- Must run on university-managed infrastructure (Docker/Kubernetes)
+- Must run on university-managed infrastructure (Linux + Docker)
 - Ukrainian language support required
 - Academic year cycle (semesters) drives data patterns
 
@@ -37,7 +37,7 @@ We will build a **monolithic backend** with a **separate SPA frontend**:
 - **Database**: PostgreSQL 15+
 - **API**: REST with OpenAPI 3.0 specification
 - **Authentication**: JWT tokens with Redis caching
-- **Deployment**: Docker containers orchestrated by Kubernetes
+- **Deployment**: Docker containers
 
 ## Rationale
 
@@ -57,11 +57,6 @@ We will build a **monolithic backend** with a **separate SPA frontend**:
 
 - **Pros**: Unified codebase, SSR benefits, simpler deployment
 - **Cons**: Team lacks Node.js expertise, less control over backend patterns
-
-#### 4. Low-Code Platform (OutSystems, Mendix)
-
-- **Pros**: Rapid development, less coding
-- **Cons**: Vendor lock-in, licensing costs, limited customization
 
 ### Chosen: Option 1 - Monolith
 
@@ -87,7 +82,7 @@ We will build a **monolithic backend** with a **separate SPA frontend**:
 
 - Must scale entire application even if only one area is bottleneck
 - Frontend and backend releases coupled (mitigated by API versioning)
-- Single point of failure (mitigated by container orchestration)
+- Single point of failure
 
 ### Neutral
 
@@ -95,19 +90,6 @@ We will build a **monolithic backend** with a **separate SPA frontend**:
 - API versioning strategy required for frontend/backend coordination
 
 ## Implementation Notes
-
-### Project Structure
-
-```
-npp-portal/
-├── npp-api/                 # Spring Boot backend
-│   └── npp-portal-backend/
-│       └── src/main/java/ua/cn/stu/npp/
-├── npp-ui/                  # React frontend
-│   └── ui/
-│       └── src/
-└── docker-compose.yml       # Local development
-```
 
 ### Key Architectural Patterns
 
@@ -120,12 +102,5 @@ npp-portal/
 ### Deployment
 
 - Docker images for both services
-- Kubernetes deployment with separate pods
 - Nginx ingress for routing
-- PostgreSQL as managed service or StatefulSet
-
-## References
-
-- [ADR-002: Database Selection](./ADR-002-database-selection)
-- [ADR-003: Authentication Strategy](./ADR-003-authentication)
-- [C4 Container Diagram](../c4/container-diagram)
+- PostgreSQL as RDBMS

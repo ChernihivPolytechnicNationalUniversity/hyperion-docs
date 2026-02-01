@@ -3,14 +3,14 @@
 
 title NPP Portal - System Context Diagram
 
-Person(guest, "Guest", "Public visitor viewing faculty info")
+Person(guest, "Guest", "Unauthenticated visitor viewing public info")
 Person(teacher, "Teacher", "Faculty member managing own profile and activities")
 Person(director, "Director", "Department head viewing staff and statistics")
 Person(admin, "Administrator", "System admin managing users and settings")
 
 System(npp, "NPP Portal", "University Faculty Work Portal\n\nManages faculty profiles, tracks work activities, calculates ratings")
 
-System_Ext(email, "Email System", "Sends password reset and notification emails")
+System_Ext(email, "Notification System", "Email, push, chat bot")
 System_Ext(ldap, "University LDAP", "Future: SSO integration")
 System_Ext(export, "Export System", "Exports data to Excel/PDF reports")
 
@@ -19,7 +19,6 @@ Rel(teacher, npp, "Manages profile, submits activities", "HTTPS")
 Rel(director, npp, "Views department stats, reviews activities", "HTTPS")
 Rel(admin, npp, "Manages users, structure, dictionaries", "HTTPS")
 
-Rel(npp, email, "Sends emails", "SMTP")
 Rel_L(npp, ldap, "Authenticates users (future)", "LDAPS")
 Rel_R(npp, export, "Generates reports", "Internal")
 

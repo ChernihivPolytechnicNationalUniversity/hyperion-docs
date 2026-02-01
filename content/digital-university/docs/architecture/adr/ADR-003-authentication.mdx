@@ -1,14 +1,15 @@
 ---
 title: "ADR-003: Authentication Strategy"
-description: JWT-based authentication with Redis caching for NPP Portal
+description: JWT-based authentication with Valkey caching for NPP Portal
 ---
 
 # ADR-003: Authentication Strategy
 
 ## Status
-**Status**: Accepted
-**Date**: 2026-01-31
-**Decision Makers**: Development Team
+
+- **Status**: Accepted
+- **Date**: 2025-09-25
+- **Decision Makers**: Development Team
 
 ## Context
 
@@ -22,20 +23,19 @@ The NPP Portal needs authentication to:
 
 ### Requirements
 
-| Requirement | Priority |
-|-------------|----------|
-| Stateless authentication for horizontal scaling | High |
-| Secure token storage | High |
-| Token refresh without re-entering credentials | High |
-| Session invalidation (logout) | High |
-| RBAC integration | High |
-| Mobile app compatibility | Medium |
-| SSO/LDAP integration ready | Low |
+| Requirement                                     | Priority |
+| ----------------------------------------------- | -------- |
+| Stateless authentication for horizontal scaling | High     |
+| Secure token storage                            | High     |
+| Token refresh without re-entering credentials   | High     |
+| Session invalidation (logout)                   | High     |
+| RBAC integration                                | High     |
+| Mobile app compatibility                        | Low      |
+| SSO/LDAP integration ready                      | Low      |
 
 ### Security Considerations
 
-- Faculty profiles contain personal data (protected by university policy)
-- Rating data is sensitive (affects performance evaluation)
+- Faculty profiles contain personal data (personal cell-phone number)
 - Public endpoints must not leak private information
 - Tokens must be invalidable on logout/password change
 
@@ -44,50 +44,55 @@ The NPP Portal needs authentication to:
 We will implement **JWT-based authentication** with a **hybrid validation strategy**:
 
 - **Access Token**: Short-lived JWT (30 minutes), validated locally
-- **Refresh Token**: Long-lived (30 days), stored in Redis
-- **Token Blacklist**: Redis-based for immediate invalidation
+- **Refresh Token**: Long-lived (7 days), stored in Valkey
+- **Token Blacklist**: Valkey-based for immediate invalidation
 
 ## Rationale
 
 ### Considered Options
 
 #### 1. Session-Based (Server-Side Sessions)
+
 - **Pros**: Simple, immediate invalidation, familiar pattern
 - **Cons**:
   - Requires sticky sessions or shared session store
   - Not suitable for mobile apps
-  - Scales poorly without Redis anyway
+  - Scales poorly without Valkey anyway
 
 #### 2. JWT Only (Stateless)
+
 - **Pros**: Truly stateless, no server-side storage, mobile-friendly
 - **Cons**:
   - Cannot invalidate tokens before expiry
   - Logout requires waiting for token expiry
   - Security risk if token is compromised
 
-#### 3. JWT + Redis Hybrid (Chosen)
+#### 3. JWT + Valkey (Chosen)
+
 - **Pros**:
   - Short access tokens reduce compromise window
-  - Redis enables immediate logout/invalidation
+  - Valkey enables immediate logout/invalidation
   - Stateless validation for most requests
   - Refresh tokens enable long sessions
 - **Cons**:
-  - Redis dependency
+  - Valkey dependency
   - Slightly more complex implementation
 
-#### 4. OAuth2 with External Provider
+#### 4. OAuth2 with External Provider (leaving for future improvement)
+
 - **Pros**: Delegated authentication, SSO support
 - **Cons**:
   - External dependency
   - Complex setup for simple use case
   - May not support university accounts
 
-### Chosen: Option 3 - JWT + Redis Hybrid
+### Chosen: Option 3 - JWT + Valkey Hybrid
 
 **Reasoning**:
+
 1. **Security**: Short access tokens (30min) limit exposure if compromised
 2. **UX**: Refresh tokens (30 days) avoid frequent re-login
-3. **Scalability**: Most requests validate JWT locally (no Redis call)
+3. **Scalability**: Most requests validate JWT locally (no Valkey call)
 4. **Control**: Can invalidate all tokens on password change or security event
 5. **Future-ready**: Pattern supports mobile apps and API consumers
 
@@ -107,7 +112,7 @@ We will implement **JWT-based authentication** with a **hybrid validation strate
 ```
 
 - **Lifetime**: 30 minutes
-- **Validation**: Local signature check (no Redis)
+- **Validation**: Local signature check (no Valkey)
 - **Contains**: User ID, roles, department IDs for authorization
 - **Algorithm**: RS256 (asymmetric for microservices readiness)
 
@@ -122,26 +127,29 @@ We will implement **JWT-based authentication** with a **hybrid validation strate
 }
 ```
 
-- **Lifetime**: 30 days
-- **Storage**: Redis with TTL
+- **Lifetime**: 7 days
+- **Storage**: Valkey with TTL
 - **Rotation**: New refresh token issued on each refresh
-- **Invalidation**: Deleted from Redis on logout
+- **Invalidation**: Deleted from Valkey on logout
 
 ## Consequences
 
 ### Positive
+
 - Horizontal scaling without session affinity
-- Immediate logout capability via Redis
+- Immediate logout capability via Valkey
 - Mobile app ready (token-based)
 - Clear separation of short-term (access) and long-term (refresh) auth
 - Password change invalidates all sessions
 
 ### Negative
-- Redis becomes critical dependency for refresh/logout
+
+- Valkey becomes critical dependency for refresh/logout
 - Token size larger than session ID (JWT overhead)
 - Clock synchronization important for token validation
 
 ### Neutral
+
 - Team needs to understand JWT security best practices
 - Frontend must handle token refresh transparently
 
@@ -153,7 +161,7 @@ We will implement **JWT-based authentication** with a **hybrid validation strate
 1. Login: POST /auth/login
    → Validate credentials
    → Generate access + refresh tokens
-   → Store refresh token in Redis
+   → Store refresh token in Valkey
    → Return both tokens to client
 
 2. API Call: GET /api/users/me
@@ -162,22 +170,22 @@ We will implement **JWT-based authentication** with a **hybrid validation strate
    → Process request
 
 3. Token Refresh: POST /auth/refresh
-   → Validate refresh token exists in Redis
+   → Validate refresh token exists in Valkey
    → Delete old refresh token
    → Generate new access + refresh tokens
-   → Store new refresh token in Redis
+   → Store new refresh token in Valkey
    → Return both tokens
 
 4. Logout: POST /auth/logout
-   → Delete refresh token from Redis
+   → Delete refresh token from Valkey
    → (Access token expires naturally)
 ```
 
-### Redis Keys
+### Valkey Keys
 
 ```
-refresh_token:{tokenId} → {userId, createdAt}  TTL: 30 days
-user_tokens:{userId} → Set of active tokenIds   TTL: 30 days
+refresh_token:{tokenId} → {userId, createdAt}  TTL: 7 days
+user_tokens:{userId} → Set of active tokenIds   TTL: 7 days
 ```
 
 ### Security Measures
@@ -213,6 +221,5 @@ public class SecurityConfig {
 ```
 
 ## References
+
 - [OWASP JWT Security Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html)
-- [ADR-001: Initial Architecture](./ADR-001-initial-architecture)
-- [Sequence: Auth Flow](../sequence/web-client/auth-flow)
