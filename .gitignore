@@ -12,8 +12,6 @@ coverage/
 .vercel
 .source
 .map
-
-apps/docs/content/**/(generated)/**
-
-# Playwright MCP testing artifacts
 .playwright-mcp/
+.idea
+apps/docs/content/**/(generated)/**

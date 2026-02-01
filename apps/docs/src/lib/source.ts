@@ -1,5 +1,4 @@
 import { type InferPageType, loader, type LoaderPlugin } from 'fumadocs-core/source';
-import { lucideIconsPlugin } from 'fumadocs-core/source/lucide-icons';
 import { openapiPlugin } from 'fumadocs-openapi/server';
 import { platform, digitalUniversity } from '@/.source';
 
