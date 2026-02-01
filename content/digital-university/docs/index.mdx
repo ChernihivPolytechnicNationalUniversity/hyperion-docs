@@ -8,8 +8,7 @@ Welcome to the Digital University project documentation. This site contains comp
 
 ## For New Team Members
 
-1. Read ...
-2. Do ...
+1. Be aquainted with [glossary](./digital-university/architecture/glossary)
 
 ## Project Overview
 
@@ -17,18 +16,55 @@ The **NPP Portal** (Науково-педагогічні працівники /
 
 ### Purpose
 
-The system addresses two core business needs:
+The system consists of multiple modules each of them addresses it's own business needs.
 
-1. **Personal Account Management** - Centralized profiles for university employees (lecturers, assistants, professors) containing academic credentials, department assignments, and professional information.
+Module 1. **Personal Account Management for Employees ** -
 
-2. **Work Reporting & Evaluation** - Structured reporting of scientific, methodological, and organizational work with automated rating calculations for performance evaluation.
+- Business logic: Centralized profiles for university employees (lecturers, assistants, professors) containing:
+  - academic credentials
+  - professional information (with academic degrees, positions, and honors)
+  - department assignments
+  - multi-department assignment support (joint positions, workload tracking)
+- User access: web app only
 
-### Key Capabilities
+Module 2. **Work Reporting & Evaluation for Employees who are Faculty/Teaching staff (aka НПП)**:
 
-- Faculty profile management with academic degrees, positions, and honors
-- Multi-department assignment support (joint positions, workload tracking)
-- Activity reporting by type (Scientific, Methodological, Organizational)
-- Co-authorship tracking for collaborative work
-- Rating and statistics calculation per teacher and department
-- Public access to faculty information and activities
+- Business logic:
 - Role-based access control with four distinct user levels
+  - Activity reporting by type: Research, Teaching, Administration
+  - Activity scoring system of work with automated rating calculations for performance evaluation (by teacher, faculty, department)
+  - Co-authorship tracking for collaborative work
+  - Public (unauthorized) access to see reported activities
+    - present activities types grouped by type (by teacher or by department)
+    - provide viualisations which show aggregated stats
+
+- User access: web app only
+
+Module 3. **Personal Account Management for Students** - The platform is used by university students for:
+
+- Business logic:
+  - viewing the class schedule;
+  - obtaining information about exams;
+  - receiving messages and announcements;
+  - monitoring financial obligations;
+  - submitting and uploading documents;
+  - electronic signing;
+
+- User access: mobile app and web app
+
+Module 4. **Digital signature** for University actors\*\*
+
+[(Implementation details)](./digital-university/4module-digital-signature)
+
+- Business logic:
+  - upload file (pdf, doc, image) to system by initial counterparty;
+    - sign file by initiator;
+    - select target person or group;
+    - uploaded file cannot be modified or removed. Only cancelled.
+  - nofity target person or group
+  - provide possibility to:
+    - sign file by target person or group
+    - reject file by target person or group
+  - nofity initiator about the result
+
+- User access: mobile app and web app
