@@ -1,4 +1,8 @@
 {
   "title": "Web Client",
-  "pages": ["example-flow"]
+  "pages": [
+    "user-login",
+    "teacher-add-activity",
+    "guest-view-statistics"
+  ]
 }
